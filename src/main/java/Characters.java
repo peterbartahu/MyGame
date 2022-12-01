@@ -1,24 +1,22 @@
 public final class Characters {
-    private static final String playerMark = "@";
-    private static final String zombieMark = "Z";
+    private static final String player = "@";
+    private static final String zombie = "Z";
     private static final String dish = "o";
-
 
     private Characters() {
 
     }
 
-    public static String getPlayerMark() {
-        return playerMark;
+    public static String getPlayer() {
+        return player;
     }
 
-    public static String getZombieMark() {
-        return zombieMark;
+    public static String getZombie() {
+        return zombie;
     }
 
     public static String getDish() {
         return dish;
     }
-
 
 }

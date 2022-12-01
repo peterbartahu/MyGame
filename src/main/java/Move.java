@@ -1,29 +1,48 @@
 import java.util.Random;
+import java.util.Scanner;
 
 public class Move {
-    public static int[] move(String[][] level, int y, int x, String dish, String emptyCell, Random random, int currentScore, String zombie, String borderCell, int moveY, int moveX, int teleportOnY, int teleportOnX) {
-        int[] coordinates = new int[2];
-        if (level[y + moveY][x + moveX].equals(dish)) {
-            level[y + moveY][x + moveX] = emptyCell;
-            Draw.placeRandom(level, dish, random);
+    public static int[] move(String[][] level, int[] coordinates, String dish, String emptyCell, Random random, String zombie, String borderCell, int moveY, int moveX, int teleportOnY, int teleportOnX) {
+        if (level[coordinates[0] + moveY][coordinates[1] + moveX].equals(dish)) {
+            level[coordinates[0] + moveY][coordinates[1] + moveX] = emptyCell;
+            Draw.placeRandom(level, dish);
             Score.addPoint();
-        } else if (level[y + moveY][x + moveX].equals(zombie)) {
-            level[y + moveY][x + moveX] = emptyCell;
-            Draw.placeRandom(level, zombie, random);
+        } else if (level[coordinates[0] + moveY][coordinates[1] + moveX].equals(zombie)) {
+            level[coordinates[0] + moveY][coordinates[1] + moveX] = emptyCell;
+            Draw.placeRandom(level, zombie);
             Score.zeroScore();
-        } else if (level[y + moveY][x + moveX].equals(emptyCell)) {
-            y += moveY;
-            x += moveX;
-        } else if (level[y + moveY][x + moveX].equals(borderCell)) {
-            y += moveY;
-            x += moveX;
+        } else if (level[coordinates[0] + moveY][coordinates[1] + moveX].equals(emptyCell)) {
+            coordinates[0] += moveY;
+            coordinates[1] += moveX;
+        } else if (level[coordinates[0] + moveY][coordinates[1] + moveX].equals(borderCell)) {
+            coordinates[0] += moveY;
+            coordinates[1] += moveX;
         }
-        if (level[y][x].equals(borderCell)) {
-            y = teleportOnY;
-            x = teleportOnX;
+        if (level[coordinates[0]][coordinates[1]].equals(borderCell)) {
+            coordinates[0] = teleportOnY;
+            coordinates[1] = teleportOnX;
         }
-        coordinates[0] = y;
-        coordinates[1] = x;
         return coordinates;
+    }
+
+    public static void moveComplete() {
+        Random random = new Random();
+        Scanner scanner = new Scanner(System.in);
+        switch (scanner.nextLine().toLowerCase()) {
+            case "w":
+                Map.setCoordinates(Move.move(Map.getLevel(), Map.getCoordinates(), Characters.getDish(), Map.getEmptyCell(), random, Characters.getZombie(), Map.getBorderCell(), -1, 0, Map.length() - 2, Map.getXCoordinate()));
+                break;
+            case "a":
+                Map.setCoordinates(Move.move(Map.getLevel(), Map.getCoordinates(), Characters.getDish(), Map.getEmptyCell(), random, Characters.getZombie(), Map.getBorderCell(), 0, -1, Map.getYCoordinate(), Map.length() - 2));
+                break;
+            case "s":
+                Map.setCoordinates(Move.move(Map.getLevel(), Map.getCoordinates(), Characters.getDish(), Map.getEmptyCell(), random, Characters.getZombie(), Map.getBorderCell(), 1, 0, 1, Map.getXCoordinate()));
+                break;
+            case "d":
+                Map.setCoordinates(Move.move(Map.getLevel(), Map.getCoordinates(), Characters.getDish(), Map.getEmptyCell(), random, Characters.getZombie(), Map.getBorderCell(), 0, 1, Map.getYCoordinate(), 1));
+                break;
+            default:
+                break;
+        }
     }
 }

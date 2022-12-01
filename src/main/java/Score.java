@@ -1,5 +1,9 @@
 public final class Score {
-    public static int score = 0;
+    private static int score = 0;
+
+    private Score() {
+
+    }
 
     public static int getScore() {
         return score;
@@ -9,11 +13,7 @@ public final class Score {
         score++;
     }
 
-    public static int zeroScore() {
-        return score = 0;
-    }
-
-    private Score() {
-
+    public static void zeroScore() {
+        score = 0;
     }
 }
