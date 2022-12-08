@@ -1,48 +1,98 @@
-import java.util.Random;
 import java.util.Scanner;
 
 public class Move {
-    public static int[] move(String[][] level, int[] coordinates, String dish, String emptyCell, Random random, String zombie, String borderCell, int moveY, int moveX, int teleportOnY, int teleportOnX) {
-        if (level[coordinates[0] + moveY][coordinates[1] + moveX].equals(dish)) {
-            level[coordinates[0] + moveY][coordinates[1] + moveX] = emptyCell;
-            Draw.placeRandom(level, dish);
-            Score.addPoint();
-        } else if (level[coordinates[0] + moveY][coordinates[1] + moveX].equals(zombie)) {
-            level[coordinates[0] + moveY][coordinates[1] + moveX] = emptyCell;
-            Draw.placeRandom(level, zombie);
-            Score.zeroScore();
-        } else if (level[coordinates[0] + moveY][coordinates[1] + moveX].equals(emptyCell)) {
-            coordinates[0] += moveY;
-            coordinates[1] += moveX;
-        } else if (level[coordinates[0] + moveY][coordinates[1] + moveX].equals(borderCell)) {
-            coordinates[0] += moveY;
-            coordinates[1] += moveX;
-        }
-        if (level[coordinates[0]][coordinates[1]].equals(borderCell)) {
-            coordinates[0] = teleportOnY;
-            coordinates[1] = teleportOnX;
-        }
-        return coordinates;
-    }
 
-    public static void moveComplete() {
-        Random random = new Random();
+    public static void processKeyboard(Map map, Score score) {
         Scanner scanner = new Scanner(System.in);
         switch (scanner.nextLine().toLowerCase()) {
             case "w":
-                Map.setCoordinates(Move.move(Map.getLevel(), Map.getCoordinates(), Characters.getDish(), Map.getEmptyCell(), random, Characters.getZombie(), Map.getBorderCell(), -1, 0, Map.length() - 2, Map.getXCoordinate()));
+                map.setCoordinates(move(map, map.getPlayerCoordinates(), 0, -1, score));
                 break;
             case "a":
-                Map.setCoordinates(Move.move(Map.getLevel(), Map.getCoordinates(), Characters.getDish(), Map.getEmptyCell(), random, Characters.getZombie(), Map.getBorderCell(), 0, -1, Map.getYCoordinate(), Map.length() - 2));
+                map.setCoordinates(move(map, map.getPlayerCoordinates(), -1, 0, score));
                 break;
             case "s":
-                Map.setCoordinates(Move.move(Map.getLevel(), Map.getCoordinates(), Characters.getDish(), Map.getEmptyCell(), random, Characters.getZombie(), Map.getBorderCell(), 1, 0, 1, Map.getXCoordinate()));
+                map.setCoordinates(move(map, map.getPlayerCoordinates(), 0, 1, score));
                 break;
             case "d":
-                Map.setCoordinates(Move.move(Map.getLevel(), Map.getCoordinates(), Characters.getDish(), Map.getEmptyCell(), random, Characters.getZombie(), Map.getBorderCell(), 0, 1, Map.getYCoordinate(), 1));
+                map.setCoordinates(move(map, map.getPlayerCoordinates(), 1, 0, score));
                 break;
             default:
                 break;
+        }
+    }
+
+    //TODO
+
+    private static Coordinates move(Map map, Coordinates coordinates, int moveX, int moveY, Score score) {
+
+        Coordinates newCoordinates = coordinates;
+
+        newCoordinates = emptyCellMove(map, moveX, moveY, newCoordinates);
+
+        findItem(map, newCoordinates, moveX, moveY, score);
+
+        newCoordinates = borderCellMove(map, moveX, moveY, score, newCoordinates);
+
+
+        return newCoordinates;
+    }
+
+    private static Coordinates borderCellMove(Map map, int moveX, int moveY, Score score, Coordinates newCoordinates) {
+        if (map.getCell(newCoordinates.getX() + moveX, newCoordinates.getY() + moveY).equals(Graphic.BORDERCELL)) {
+            newCoordinates = new Coordinates(newCoordinates.getX() + moveX, newCoordinates.getY() + moveY);
+        }
+        if (map.getCell(newCoordinates.getX(), newCoordinates.getY()).equals(Graphic.BORDERCELL)) {
+            if (newCoordinates.getY() == 0) {
+                newCoordinates = new Coordinates(newCoordinates.getX(), map.getHeight() - 2);
+                findBorderItem(map, newCoordinates, score);
+            } else if (newCoordinates.getX() == 0) {
+                newCoordinates = new Coordinates(map.getWidth() - 2, newCoordinates.getY());
+                findBorderItem(map, newCoordinates, score);
+            } else if (newCoordinates.getY() == map.getHeight() - 1) {
+                newCoordinates = new Coordinates(newCoordinates.getX(), 1);
+                findBorderItem(map, newCoordinates, score);
+            } else if (newCoordinates.getX() == map.getWidth() - 1) {
+                newCoordinates = new Coordinates(1, newCoordinates.getY());
+                findBorderItem(map, newCoordinates, score);
+            }
+        }
+        return newCoordinates;
+    }
+
+    private static Coordinates emptyCellMove(Map imap, int iMoveX, int iMoveY, Coordinates iNewCoordinates) {
+        if (imap.getCell(iNewCoordinates.getX() + iMoveX, iNewCoordinates.getY() + iMoveY).equals(Graphic.EMPTYCELL)) {
+            iNewCoordinates = new Coordinates(iNewCoordinates.getX() + iMoveX, iNewCoordinates.getY() + iMoveY);
+        }
+        return iNewCoordinates;
+    }
+
+
+
+    //TODO
+    public static void findBorderItem(Map iMap, Coordinates iCoordinates, Score iScore) {
+        if (iMap.getCell(iCoordinates.getX(), iCoordinates.getY()).equals(Graphic.FOOD)) {
+            iMap.setCell(iCoordinates.getX(), iCoordinates.getY(), Graphic.EMPTYCELL);
+            Draw.placeRandom(iMap, Graphic.FOOD);
+            iScore.addPoint();
+        }
+        if (iMap.getCell(iCoordinates.getX(), iCoordinates.getY()).equals(Graphic.ZOMBIE)) {
+            iMap.setCell(iCoordinates.getX(), iCoordinates.getY(), Graphic.EMPTYCELL);
+            Draw.placeRandom(iMap, Graphic.ZOMBIE);
+            iScore.resetScore();
+        }
+    }
+
+    public static void findItem(Map iMap, Coordinates iCoordinates, int iMoveX, int iMoveY, Score iScore) {
+        if (iMap.getCell(iCoordinates.getX() + iMoveX, iCoordinates.getY() + iMoveY).equals(Graphic.FOOD)) {
+            iMap.setCell(iCoordinates.getX() + iMoveX, iCoordinates.getY() + iMoveY, Graphic.EMPTYCELL);
+            Draw.placeRandom(iMap, Graphic.FOOD);
+            iScore.addPoint();
+        }
+        if (iMap.getCell(iCoordinates.getX() + iMoveX, iCoordinates.getY() + iMoveY).equals(Graphic.ZOMBIE)) {
+            iMap.setCell(iCoordinates.getX() + iMoveX, iCoordinates.getY() + iMoveY, Graphic.EMPTYCELL);
+            Draw.placeRandom(iMap, Graphic.ZOMBIE);
+            iScore.resetScore();
         }
     }
 }

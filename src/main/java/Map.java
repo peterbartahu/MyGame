@@ -1,52 +1,33 @@
-public final class Map {
-    private static final String[][] level = new String[10][10];
+public class Map {
+    private final String[][] map;
+    private Coordinates coordinates;
 
-    private static int[] coordinates = {1, 1};
-
-    private static final String borderCell = "'";
-    private static final String emptyCell = " ";
-
-
-    private Map() {
-
+    public Map() {
+        map = new String[10][10];
+        coordinates = new Coordinates(1, 1);
     }
 
-    public static String getCell(int y, int x) {
-        return level[y][x];
+    public String getCell(int x, int y) {
+        return map[x][y];
     }
 
-    public static int[] getCoordinates() {
+    public void setCell(int x, int y, String value) {
+        map[x][y] = value;
+    }
+
+    public Coordinates getPlayerCoordinates() {
         return coordinates;
     }
 
-    public static void setCoordinates(int[] newCoordinates) {
-        coordinates = newCoordinates;
+    public void setCoordinates(Coordinates coordinates) {
+         this.coordinates = coordinates;
     }
 
-    public static int getYCoordinate() {
-        return coordinates[0];
+    public int getWidth(){
+        return map[0].length;
     }
 
-    public static int getXCoordinate() {
-        return coordinates[1];
+    public int getHeight(){
+        return map.length;
     }
-
-    public static String[][] getLevel() {
-        return level;
-    }
-
-
-    public static String getBorderCell() {
-        return borderCell;
-    }
-
-
-    public static String getEmptyCell() {
-        return emptyCell;
-    }
-
-    public static int length() {
-        return level.length;
-    }
-
 }

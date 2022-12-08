@@ -1,29 +1,26 @@
 import java.util.Random;
 
 public class Draw {
-
-    public static void mapInit(String[][] level, String borderCell, String emptyCell) {
-
-        for (int i = 0; i < level.length; i++) {
-            for (int j = 0; j < level[i].length; j++) {
-                if (i == 0 || j == 0 || i == level.length - 1 || j == level.length - 1) {
-                    level[i][j] = borderCell;
+    public static void mapInit(Map map) {
+        for (int i = 0; i < map.getHeight(); i++) {
+            for (int j = 0; j < map.getWidth(); j++) {
+                if (i == 0 || j == 0 || i == map.getHeight() - 1 || j == map.getWidth() - 1) {
+                    map.setCell(j, i, Graphic.BORDERCELL);
                 } else {
-                    level[i][j] = emptyCell;
+                    map.setCell(j, i, Graphic.EMPTYCELL);
                 }
             }
         }
-
     }
 
-    public static void drawMap(String[][] level, int[] coordinates, String playerMark) {
-        for (int i = 0; i < level.length; i++) {
-            for (int j = 0; j < level[i].length; j++) {
+    public static void drawMap(Map map, Coordinates coordinates) {
+        for (int i = 0; i < map.getHeight(); i++) {
+            for (int j = 0; j < map.getWidth(); j++) {
                 String position;
-                if (i == coordinates[0] && j == coordinates[1]) {
-                    position = playerMark;
+                if (i == coordinates.getY() && j == coordinates.getX()) {
+                    position = Graphic.PLAYER;
                 } else {
-                    position = level[i][j];
+                    position = map.getCell(j, i);
                 }
                 System.out.print(position);
             }
@@ -31,20 +28,20 @@ public class Draw {
         }
     }
 
-    public static void placeRandom(String[][] level, String item) {
+    public static void placeRandom(Map map, String item) {
         Random random = new Random();
         boolean searchEmpty = true;
         while (searchEmpty) {
-            int y = random.nextInt((level.length - 1) - 1) + 1;
-            int x = random.nextInt((level.length - 1) - 1) + 1;
-            if (Map.getCell(y, x).equals(Map.getEmptyCell())) {
-                level[y][x] = item;
+            int y = random.nextInt((map.getHeight() - 1) - 1) + 1;
+            int x = random.nextInt((map.getWidth() - 1) - 1) + 1;
+            if (map.getCell(x, y).equals(Graphic.EMPTYCELL)) {
+                map.setCell(x, y, item);
                 searchEmpty = false;
             }
         }
     }
 
-    public static void showScore() {
-        System.out.println("Your score now: " + Score.getScore());
+    public static void showScore(Score score) {
+        System.out.println("Your score now: " + score.getScore());
     }
 }

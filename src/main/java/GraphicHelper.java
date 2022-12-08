@@ -1,6 +1,6 @@
 import java.io.IOException;
 
-public class Utility {
+public class GraphicHelper {
 
     public static void clearScreen() {
         try {

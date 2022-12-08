@@ -1,19 +1,18 @@
-public final class Score {
-    private static int score = 0;
+public class Score {
+    private int score = 0;
 
-    private Score() {
-
+    public Score() {
     }
 
-    public static int getScore() {
+    public int getScore() {
         return score;
     }
 
-    public static void addPoint() {
+    public void addPoint() {
         score++;
     }
 
-    public static void zeroScore() {
+    public void resetScore() {
         score = 0;
     }
 }
