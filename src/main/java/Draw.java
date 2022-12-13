@@ -34,7 +34,7 @@ public class Draw {
         while (searchEmpty) {
             int y = random.nextInt((map.getHeight() - 1) - 1) + 1;
             int x = random.nextInt((map.getWidth() - 1) - 1) + 1;
-            if (map.getCell(x, y).equals(Graphic.EMPTYCELL)) {
+            if (map.getCell(x, y).equals(Graphic.EMPTYCELL) && !(map.getCell(x,y).equals(Graphic.PLAYER))) {
                 map.setCell(x, y, item);
                 searchEmpty = false;
             }
