@@ -1,25 +1,25 @@
 public class Map {
     private final String[][] map;
-    private Coordinates coordinates;
+    private Vector coordinates;
 
     public Map() {
         map = new String[10][10];
-        coordinates = new Coordinates(1, 1);
+        coordinates = Vector.of(1, 1);
     }
 
-    public String getCell(int x, int y) {
-        return map[x][y];
+    public String getCell(Vector coordinates) {
+        return map[coordinates.getX()][coordinates.getY()];
     }
 
     public void setCell(int x, int y, String value) {
         map[x][y] = value;
     }
 
-    public Coordinates getPlayerCoordinates() {
+    public Vector getPlayerCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(Coordinates coordinates) {
+    public void setCoordinates(Vector coordinates) {
          this.coordinates = coordinates;
     }
 

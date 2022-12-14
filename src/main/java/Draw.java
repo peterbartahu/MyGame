@@ -13,14 +13,14 @@ public class Draw {
         }
     }
 
-    public static void drawMap(Map map, Coordinates coordinates) {
+    public static void drawMap(Map map, Vector coordinates) {
         for (int i = 0; i < map.getHeight(); i++) {
             for (int j = 0; j < map.getWidth(); j++) {
                 String position;
                 if (i == coordinates.getY() && j == coordinates.getX()) {
                     position = Graphic.PLAYER;
                 } else {
-                    position = map.getCell(j, i);
+                    position = map.getCell(Vector.of(j, i));
                 }
                 System.out.print(position);
             }
@@ -34,7 +34,7 @@ public class Draw {
         while (searchEmpty) {
             int y = random.nextInt((map.getHeight() - 1) - 1) + 1;
             int x = random.nextInt((map.getWidth() - 1) - 1) + 1;
-            if (map.getCell(x, y).equals(Graphic.EMPTYCELL) && !(map.getCell(x,y).equals(Graphic.PLAYER))) {
+            if (map.getCell(Vector.of(x, y)).equals(Graphic.EMPTYCELL) && !(map.getCell(Vector.of(x,y)).equals(Graphic.PLAYER))) {
                 map.setCell(x, y, item);
                 searchEmpty = false;
             }
