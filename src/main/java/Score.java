@@ -1,7 +1,7 @@
 public class Score {
     private int score = 0;
 
-    public Score() {
+    private Score() {
     }
 
     public int getScore() {
@@ -14,5 +14,9 @@ public class Score {
 
     public void resetScore() {
         score = 0;
+    }
+
+    public static Score of() {
+        return new Score();
     }
 }

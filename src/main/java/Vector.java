@@ -2,7 +2,7 @@ public class Vector {
     private final int x;
     private final int y;
 
-    private Vector(int x, int y) {
+    private Vector(final int x, final int y) {
         this.x = x;
         this.y = y;
     }
@@ -15,11 +15,11 @@ public class Vector {
         return y;
     }
 
-    public static Vector of(int x, int y) {
+    public static Vector of(final int x, final int y) {
         return new Vector(x, y);
     }
 
-    public Vector add(Vector move) {
-        return Vector.of(this.x + move.getX(), this.y + move.getY());
+    public Vector add(final Vector move) {
+        return Vector.of(x + move.getX(), y + move.getY());
     }
 }

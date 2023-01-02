@@ -1,7 +1,7 @@
 import java.util.Random;
 
-public class Draw {
-    public static void mapInit(Map map) {
+public class MapHelper {
+    public static void mapInit(final Map map) {
         for (int i = 0; i < map.getHeight(); i++) {
             for (int j = 0; j < map.getWidth(); j++) {
                 if (i == 0 || j == 0 || i == map.getHeight() - 1 || j == map.getWidth() - 1) {
@@ -11,12 +11,14 @@ public class Draw {
                 }
             }
         }
+        placeRandom(map, Graphic.FOOD);
+        placeRandom(map, Graphic.ZOMBIE);
     }
 
-    public static void drawMap(Map map, Vector coordinates) {
+    public static void drawMap(final Map map, final Vector coordinates) {
         for (int i = 0; i < map.getHeight(); i++) {
             for (int j = 0; j < map.getWidth(); j++) {
-                String position;
+                final String position;
                 if (i == coordinates.getY() && j == coordinates.getX()) {
                     position = Graphic.PLAYER;
                 } else {
@@ -28,20 +30,16 @@ public class Draw {
         }
     }
 
-    public static void placeRandom(Map map, String item) {
-        Random random = new Random();
+    public static void placeRandom(final Map map, final String item) {
+        final Random random = new Random();
         boolean searchEmpty = true;
         while (searchEmpty) {
-            int y = random.nextInt((map.getHeight() - 1) - 1) + 1;
-            int x = random.nextInt((map.getWidth() - 1) - 1) + 1;
-            if (map.getCell(Vector.of(x, y)).equals(Graphic.EMPTYCELL) && !(map.getCell(Vector.of(x,y)).equals(Graphic.PLAYER))) {
+            final int y = random.nextInt((map.getHeight() - 1) - 1) + 1;
+            final int x = random.nextInt((map.getWidth() - 1) - 1) + 1;
+            if (map.getCell(Vector.of(x, y)).equals(Graphic.EMPTYCELL) && !(map.getCell(Vector.of(x, y)).equals(Graphic.PLAYER))) {
                 map.setCell(x, y, item);
                 searchEmpty = false;
             }
         }
-    }
-
-    public static void showScore(Score score) {
-        System.out.println("Your score now: " + score.getScore());
     }
 }
