@@ -24,6 +24,13 @@ cmd prompts:
 
 cd ....\MyGame\target
 
+OR just from Command Line
+
+cd ...\MyGame-master
+
+mvn package
+
+java -cp target\MyGame-1.0-SNAPSHOT.jar Main
 
 java -jar MyGame-1.0-SNAPSHOT.jar
 ## Features
