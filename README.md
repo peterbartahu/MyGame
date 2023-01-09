@@ -10,7 +10,7 @@
 
 ## Built with
 
-Java SE JDK 11
+Java JDK 11
 
 Maven version 3.8.1
 ## Install
