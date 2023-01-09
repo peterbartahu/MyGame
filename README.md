@@ -20,7 +20,9 @@ Maven -> Lifecyle -> Install
 OR
 
 Command line
+
 cd ...\MyGame-master
+
 mvn package
 
 ## Execution
