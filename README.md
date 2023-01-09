@@ -16,13 +16,20 @@ Maven version 3.8.1
 ## Install
 
 Maven -> Lifecyle -> Install
+
+OR
+
+Command line
+cd ...\MyGame-master
+mvn package
+
 ## Execution
 
 After maven install, you can run JAR file from target folder
 
 cmd prompts: 
 
-cd ....\MyGame\target
+cd ....\MyGame-master\target
 
 OR just from Command Line
 
