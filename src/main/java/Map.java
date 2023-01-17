@@ -1,13 +1,13 @@
 public class Map {
     private final String[][] map;
-    private Vector playerCoordinates;
+    private Coordinates playerCoordinates;
 
     public Map() {
         map = new String[10][10];
-        playerCoordinates = Vector.of(1, 1);
+        playerCoordinates = Coordinates.of(1, 1);
     }
 
-    public String getCell(final Vector coordinates) {
+    public String getCell(final Coordinates coordinates) {
         return map[coordinates.getX()][coordinates.getY()];
     }
 
@@ -15,11 +15,11 @@ public class Map {
         map[x][y] = value;
     }
 
-    public Vector getPlayerCoordinates() {
+    public Coordinates getPlayerCoordinates() {
         return playerCoordinates;
     }
 
-    public void setPlayerCoordinates(final Vector playerCoordinates) {
+    public void setPlayerCoordinates(final Coordinates playerCoordinates) {
         this.playerCoordinates = playerCoordinates;
     }
 

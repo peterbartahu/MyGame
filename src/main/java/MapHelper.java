@@ -15,14 +15,14 @@ public class MapHelper {
         placeRandom(map, Graphic.ZOMBIE);
     }
 
-    public static void drawMap(final Map map, final Vector coordinates) {
+    public static void drawMap(final Map map, final Coordinates coordinates) {
         for (int i = 0; i < map.getHeight(); i++) {
             for (int j = 0; j < map.getWidth(); j++) {
                 final String position;
                 if (i == coordinates.getY() && j == coordinates.getX()) {
                     position = Graphic.PLAYER;
                 } else {
-                    position = map.getCell(Vector.of(j, i));
+                    position = map.getCell(Coordinates.of(j, i));
                 }
                 System.out.print(position);
             }
@@ -36,10 +36,17 @@ public class MapHelper {
         while (searchEmpty) {
             final int y = random.nextInt((map.getHeight() - 1) - 1) + 1;
             final int x = random.nextInt((map.getWidth() - 1) - 1) + 1;
-            if (map.getCell(Vector.of(x, y)).equals(Graphic.EMPTYCELL) && !(map.getCell(Vector.of(x, y)).equals(Graphic.PLAYER))) {
+            if (map.getCell(Coordinates.of(x, y)).equals(Graphic.EMPTYCELL) && !(map.getCell(Coordinates.of(x, y)).equals(Graphic.PLAYER))) {
                 map.setCell(x, y, item);
                 searchEmpty = false;
             }
         }
+    }
+
+    public static Coordinates moveProcess(final Map map, final Coordinates playerCoordinates, final Coordinates move, final Score score) {
+        Coordinates newCoordinates = playerCoordinates;
+        newCoordinates = GameSimulation.mapMove(map, move, score, newCoordinates);
+        newCoordinates = GameSimulation.borderMove(map, score, newCoordinates);
+        return newCoordinates;
     }
 }
